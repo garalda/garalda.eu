@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Lands of Lore using Babylon.js</title>
+        <!-- Babylon.js -->
+        <script src="js/typedarray.js"></script>
+        <script src="js/babylon.js"></script>
+        <script src="js/babylon.waterMaterial.js"></script>
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 20px;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 640px;
+                height: 480px;
+                touch-action: none;
+            }
+        </style>
+    </head>
+<body style="background:url('images/background.png');" onresize="OnResize();">
+    <canvas id="renderCanvas" style="position:absolute;top:0px;left:220px;text-align:center;"></canvas>
+    <div id="imgCanvas" style="position:absolute;top:0px;left:220px;text-align:center;background-image:url('images/guard01_face01.png');background-repeat:no-repeat;background-size:100% 100%;display:none;"></div>
+    <div id="idMoney" style="position:absolute;background:#402C23;height: 50px;color: #ffffff;text-align: center;width: 50px;bottom: 150px;right: 50px;">
+          <div id="idMoneyAmount">0</div>
+          <img src="images/money.png" />
+        </div>
+        <div id="idTextArea" style="position:absolute;background:#402C23;height:30px;left:155px;color:#ffffff;padding:5px;font-size:24px;bottom: 110px;width: 85%;">Vítej cizinče.</div>
+        <div id="idButtons" style="position:absolute;background:#402C23;width:210px;height:120px;left:5px;bottom: 150px;">
+          <img src="images/turn_left.png" onclick="turn('left');" style="width:65px;"/>
+          <img src="images/move_forward.png" onclick="move('fwd');" style="width:65px;"/>
+          <img src="images/turn_right.png" onclick="turn('right');" style="width:65px;"/>
+          <img src="images/move_left.png" onclick="move('left');" style="width:65px;"/>
+          <img src="images/move_back.png" onclick="move('back');" style="width:65px;"/>
+          <img src="images/move_right.png" onclick="move('right');" style="width:65px;"/>
+        </div>
+        <div id="idPlayers" style="position:absolute;left:220px;bottom: 40px;">
+          <div id="idPlayer1" style="text-align:center;height: 64px;width: 135px;">
+            <div style="width: 62px; height: 64px; position: relative; overflow: hidden;float:left;"> 
+              <img src="images/face_akshel.png" alt="Ak' Shell" id="imgPlayer1" style="position: absolute; top: 0px; left: 0px" />
+            </div>
+            <div id="plr1mana" style="background:blue;width:10px;height:60px;margin-left:3px;margin-top:0px;float:left;" ></div>
+            <div id="plr1lives" style="background:red;width:10px;height:60px;margin-left:3px;margin-top:0px;float:left;" ></div>
+            <div id="weapon" style="float:left;margin-left: 3px;margin-top:-3px;" onclick="attack(1);" >
+              <img src="images/empty_weapon.png" />
+            </div>
+            <img src="images/slot_spell.png" style="float:left;margin-left: 3px;" />
+          </div>
+        </div>
+        <div id="idSettings" style="position:absolute;background:#402C23;width:91px;height:39px;left:10px;bottom: 0px;">
+          <img src="images/save.png" onclick="alert('save');">
+          <img src="images/sleep.png" onclick="SleepParty();">
+        </div>
+        <div style="position:absolute;background:#402C23;height:43px;left:155px;bottom: 10px;width: 84%;">
+          <img src="images/move_left.png" onclick="moveinv('left');" style="height:43px;float:left;"/>
+          <span  id="idInventory" style="float:left;"></span>
+          <img src="images/move_right.png" onclick="moveinv('right');" style="height:43px;float:right;"/>
+        </div>
+        <script>
+          var imgpath = 'images/';
+          var jspath = 'js/';
+          var mappath = 'js/maps/'
+          var lngpath = 'js/lng/'
+        </script>
+        <script src="js/items.js"></script>
+        <script src="js/maingame.js"></script>
+</body>
+</html>
