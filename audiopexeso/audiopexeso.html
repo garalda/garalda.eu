@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Audiopexeso</title>
+    </head>
+    <body>
+        <script src="js/howler.js"></script>
+        <script>
+            var lstSnds = ['Animal chirpping animals139.mp3','Australian Frogmouth animals118.mp3','Bassett hound barking animals045.mp3','Bird chirps animals140.mp3',
+            'Bird songs animals141.mp3', 'Bird-chirp (Mexican Red Parot) animals123.mp3','Bird-chirp (Red Lories) animals119.mp3','Canary animals065.mp3'];
+        </script>
+        <!-- audio id="audiotag1" src="audio/Animal chirpping animals139.mp3" preload="auto"></audio>
+        <audio id="audiotag2" src="audio/Australian Frogmouth animals118.mp3" preload="auto"></audio>
+        <audio id="audiotag3" src="audio/Bassett hound barking animals045.mp3" preload="auto"></audio>
+        <audio id="audiotag4" src="audio/Bird chirps animals140.mp3" preload="auto"></audio>
+        <audio id="audiotag5" src="audio/Bird songs animals141.mp3" preload="auto"></audio>
+        <audio id="audiotag6" src="audio/Bird-chirp (Mexican Red Parot) animals123.mp3" preload="auto"></audio>
+        <audio id="audiotag7" src="audio/Bird-chirp (Red Lories) animals119.mp3" preload="auto"></audio>
+        <audio id="audiotag8" src="audio/Canary animals065.mp3" preload="auto"></audio-->
+
+        <style>
+            td 
+            {
+                border: solid 1px black;
+                margin: 2px;
+                padding: 2px;
+            }
+        </style>
+        <h1>Audiopexeso</h1>
+        <table id='tbl'>
+        </table>
+        Počet pokusů: <div id='amnt'>0</div>
+
+        <script type="text/javascript">
+            var tiles = [];
+            var lstSounds = [];
+            var audiotags = 8;
+            var rows = 4;
+            var cols = 4;
+            var lstSelectedTiles = [];
+            var amount = 0;
+            
+            function Init()
+            {
+                let lstTemp = [];
+                for (let i = 0;i<audiotags;i++)
+                {
+                    lstTemp.push(i);
+                    lstTemp.push(i);
+                }
+                let index = 0;
+                let j = -1;
+                let elmtbl = document.getElementById('tbl');
+                let elmtr;
+                let elmtd;
+                let elmimg;
+                while (lstTemp.length > 0)
+                {
+                    j = Math.floor((Math.random() * lstTemp.length));
+                    tiles.push({id: index, img: index, sound: 'audiotag' + lstTemp[j], done: false, selected: false, snd: new Howl({src:['audio/' + lstSnds[lstTemp[j]]]}), });
+                    lstTemp.splice(j, 1);
+                    elmimg = document.createElement('img');
+                    elmimg.setAttribute('id', 'img' + index);
+                    elmimg.setAttribute('src', 'img/note_64x64.png');
+                    elmimg.onclick = function() { select_tile(this);};
+                    if (index % rows == 0)
+                    {
+                        if (index > 0)
+                            elmtbl.appendChild(elmtr);
+                        elmtr = document.createElement('tr');
+                    }
+                    elmtd = document.createElement('td');
+                    elmtd.appendChild(elmimg);
+                    elmtr.appendChild(elmtd);
+                    index++;
+                }
+                elmtbl.appendChild(elmtr);
+                amount = 0;
+                document.getElementById('amnt').innerText = amount;
+            }
+
+	        function select_tile(elm) {
+                let elmid = elm.id.toString().replace('img','');
+                if (tiles[elmid].done)
+                    return;
+                if (lstSelectedTiles.length > 0 && elmid == lstSelectedTiles[0])
+                    return;
+                if (lstSelectedTiles.length > 1 && elmid == lstSelectedTiles[1])                
+                    return;
+                document.getElementById('img' + tiles[elmid].img).removeAttribute('style');
+                document.getElementById('img' + tiles[elmid].img).setAttribute('style', 'background: cadetblue;');
+                stop_all_sounds();
+                // document.getElementById(tiles[elmid].sound).load();
+		        // document.getElementById(tiles[elmid].sound).play();
+                tiles[elmid].snd.play();
+                lstSounds.push(tiles[elmid].snd);
+                lstSelectedTiles.push(elmid);
+                if (lstSelectedTiles.length == 2)
+                {
+                    if (tiles[lstSelectedTiles[0]].sound == tiles[lstSelectedTiles[1]].sound)
+                    {
+                        document.getElementById('img' + tiles[lstSelectedTiles[0]].img).removeAttribute('style');
+                        document.getElementById('img' + tiles[lstSelectedTiles[0]].img).setAttribute('style', 'background: yellow;');
+                        document.getElementById('img' + tiles[lstSelectedTiles[1]].img).removeAttribute('style');
+                        document.getElementById('img' + tiles[lstSelectedTiles[1]].img).setAttribute('style', 'background: yellow;');
+                        tiles[lstSelectedTiles[0]].done = true;
+                        tiles[lstSelectedTiles[1]].done = true;
+                        lstSelectedTiles = [];
+                        amount++;
+                        document.getElementById('amnt').innerText = amount;
+                    } 
+                }
+                if (lstSelectedTiles.length > 2)
+                {
+                        document.getElementById('img' + tiles[lstSelectedTiles[0]].img).removeAttribute('style');
+                        document.getElementById('img' + tiles[lstSelectedTiles[0]].img).setAttribute('style', 'background: white;');
+                        document.getElementById('img' + tiles[lstSelectedTiles[1]].img).removeAttribute('style');
+                        document.getElementById('img' + tiles[lstSelectedTiles[1]].img).setAttribute('style', 'background: white;');
+                        lstSelectedTiles = [];
+                        lstSelectedTiles.push(elmid);
+                        amount++;
+                        document.getElementById('amnt').innerText = amount;
+                }
+	        }
+
+            function stop_all_sounds()
+            {
+                for (let i = 0;i<lstSounds.length;i++)
+                {
+                    lstSounds[i].stop();
+                    // document.getElementById(lstSounds[i]).pause();
+                }
+                lstSounds = [];
+            }
+
+            Init();
+        </script>
+    </body>
+</html>
